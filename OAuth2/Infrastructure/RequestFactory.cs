@@ -1,3 +1,4 @@
+using System;
 using RestSharp;
 
 namespace OAuth2.Infrastructure
@@ -13,6 +14,14 @@ namespace OAuth2.Infrastructure
         public IRestClient CreateClient()
         {
             return new RestClient();
+        }
+
+        /// <summary>
+        /// Returns new REST client instance.
+        /// </summary>
+        public IRestClient CreateClient(string baseUri)
+        {
+            return new RestClient(new Uri(baseUri));
         }
 
         /// <summary>

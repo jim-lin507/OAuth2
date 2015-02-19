@@ -37,6 +37,7 @@ namespace OAuth2.Tests.Client
 
             factory = Substitute.For<IRequestFactory>();
             factory.CreateClient().Returns(restClient);
+            factory.CreateClient(Arg.Any<string>()).Returns(restClient);
             factory.CreateRequest().Returns(restRequest);
 
             var configuration = Substitute.For<IClientConfiguration>();
@@ -82,10 +83,10 @@ namespace OAuth2.Tests.Client
             // assert
             uri.Should().Be("https://login-link.net/");
 
-            factory.Received(1).CreateClient();
+            factory.Received(1).CreateClient("https://AccessCodeServiceEndpoint");
             factory.Received(1).CreateRequest();
 
-            restClient.Received(1).BaseUrl = "https://AccessCodeServiceEndpoint";
+            //restClient.Received(1).BaseUrl = "https://AccessCodeServiceEndpoint";
             restRequest.Received(1).Resource = "/AccessCodeServiceEndpoint";
 
             restRequest.Received(1).AddObject(Arg.Is<object>(
@@ -143,7 +144,7 @@ namespace OAuth2.Tests.Client
             descendant.GetUserInfo(new NameValueCollection {{"code", "code"}});
 
             // assert
-            restClient.Received(1).BaseUrl = "https://AccessTokenServiceEndpoint";
+            //restClient.Received(1).BaseUrl = "https://AccessTokenServiceEndpoint";
             restRequest.Received(1).Resource = "/AccessTokenServiceEndpoint";
             restRequest.Received(1).Method = Method.POST;
             restRequest.Received(1).AddObject(Arg.Is<object>(x => x.AllPropertiesAreEqualTo(
@@ -169,7 +170,7 @@ namespace OAuth2.Tests.Client
             descendant.GetUserInfo(new NameValueCollection {{"code", "code"}});
 
             // assert
-            restClient.Received(1).BaseUrl = "https://UserInfoServiceEndpoint";
+            //restClient.Received(1).BaseUrl = "https://UserInfoServiceEndpoint";
             restRequest.Received(1).Resource = "/UserInfoServiceEndpoint";
             restClient.Authenticator.Should().BeOfType<OAuth2UriQueryParameterAuthenticator>();
         }
